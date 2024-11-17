@@ -1,4 +1,4 @@
-package com.youcode.citronix.common;
+package com.youcode.citronix.common.service;
 
 import com.youcode.citronix.farm.application.dto.PagedResponse;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +14,4 @@ public interface GenericService<RequestDTO, ResponseDTO, ID> {
 
         void deleteById(ID id);
     }
-}
+
