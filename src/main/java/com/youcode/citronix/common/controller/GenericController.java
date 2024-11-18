@@ -3,19 +3,17 @@ package com.youcode.citronix.common.controller;
 import com.youcode.citronix.common.service.GenericService;
 import com.youcode.citronix.farm.application.dto.PagedResponse;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@AllArgsConstructor
 
 public abstract class GenericController<RequestDTO, ResponseDTO, ID> {
 
     protected final GenericService<RequestDTO, ResponseDTO, ID> service;
 
-    public GenericController(GenericService<RequestDTO, ResponseDTO, ID> service) {
-        this.service = service;
-    }
 
     @PostMapping
     public ResponseEntity<ResponseDTO> create(@RequestBody RequestDTO requestDto) {
