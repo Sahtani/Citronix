@@ -1,6 +1,5 @@
 package com.youcode.citronix.harvest.domain.entity;
 
-import com.youcode.citronix.common.AbstractEntity;
 import com.youcode.citronix.farm.domain.valueobject.Season;
 import com.youcode.citronix.sale.domain.entity.Sale;
 import jakarta.persistence.*;
@@ -22,7 +21,10 @@ import java.util.Set;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Harvest extends AbstractEntity {
+public class Harvest  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private LocalDateTime harvestDate;

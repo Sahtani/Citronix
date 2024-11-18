@@ -1,6 +1,5 @@
 package com.youcode.citronix.harvest.domain.entity;
 
-import com.youcode.citronix.common.AbstractEntity;
 import com.youcode.citronix.farm.domain.entity.Tree;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class HarvestDetail extends AbstractEntity {
+public class HarvestDetail  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Harvest harvest;
