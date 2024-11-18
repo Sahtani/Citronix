@@ -1,6 +1,6 @@
 package com.youcode.citronix.farm.domain.entity;
 
-import com.youcode.citronix.common.AbstractEntity;
+import com.youcode.citronix.harvest.domain.entity.HarvestDetail;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,6 +10,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "trees")
@@ -18,7 +20,10 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tree extends AbstractEntity {
+public class Tree  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     @NotNull

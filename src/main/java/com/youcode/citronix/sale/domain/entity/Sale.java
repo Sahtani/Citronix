@@ -1,6 +1,5 @@
 package com.youcode.citronix.sale.domain.entity;
 
-import com.youcode.citronix.common.AbstractEntity;
 import com.youcode.citronix.harvest.domain.entity.Harvest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +18,10 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Sale extends AbstractEntity {
+public class Sale  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     @NotNull

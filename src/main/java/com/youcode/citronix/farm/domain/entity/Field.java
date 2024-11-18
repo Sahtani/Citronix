@@ -1,7 +1,6 @@
 package com.youcode.citronix.farm.domain.entity;
 
 
-import com.youcode.citronix.common.AbstractEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,8 +19,10 @@ import java.util.Set;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Field extends AbstractEntity {
-
+public class Field  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(nullable = false)
     @NotNull
     private String name;

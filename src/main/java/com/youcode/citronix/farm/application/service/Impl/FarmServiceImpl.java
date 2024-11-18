@@ -22,4 +22,6 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
         this.farmRepository = farmRepository;
         this.mapper = mapper;
     }
+
+
 }
