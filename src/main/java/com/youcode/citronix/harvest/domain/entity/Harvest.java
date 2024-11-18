@@ -2,6 +2,7 @@ package com.youcode.citronix.harvest.domain.entity;
 
 import com.youcode.citronix.common.AbstractEntity;
 import com.youcode.citronix.farm.domain.valueobject.Season;
+import com.youcode.citronix.sale.domain.entity.Sale;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

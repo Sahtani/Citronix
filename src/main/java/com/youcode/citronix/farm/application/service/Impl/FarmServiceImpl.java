@@ -23,11 +23,5 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
         this.mapper = mapper;
     }
 
-    @Override
-    public FarmResponseDTO save(FarmRequestDTO farmRequestDTO) {
-        Farm farm = mapper.toEntity(farmRequestDTO);
-      Farm savedFarm = farmRepository.save(farm);
-      return mapper.toDto(savedFarm);
 
-    }
 }
