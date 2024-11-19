@@ -31,7 +31,6 @@ public class FarmController extends GenericController<FarmRequestDTO, FarmRespon
             @RequestParam(required = false) Double area) {
 
         List<FarmResponseDTO> farms = service.searchFarms(name, location, area);
-
         if (farms.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
