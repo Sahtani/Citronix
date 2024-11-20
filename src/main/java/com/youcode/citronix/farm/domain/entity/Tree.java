@@ -32,7 +32,7 @@ public class Tree  {
     @NotNull
     private LocalDateTime plantingDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     @NotNull
     private Field field;

@@ -31,7 +31,7 @@ public class Field  {
    @NotNull
     private double area;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Farm farm;
 

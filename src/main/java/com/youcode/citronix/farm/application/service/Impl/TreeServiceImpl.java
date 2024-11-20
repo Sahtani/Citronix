@@ -49,27 +49,25 @@ public class TreeServiceImpl extends AbstractService<Tree, TreeRequestDTO, TreeR
     public TreeResponseDTO save(TreeRequestDTO treeRequestDTO) {
 
         Field field = fieldRepository.findById(treeRequestDTO.fieldId())
-                .orElseThrow(() -> new EntityNotFoundException("Champ introuvable avec l'ID : " + treeRequestDTO.fieldId()));
+                .orElseThrow(() -> new EntityNotFoundException("Field not found with 'ID : " + treeRequestDTO.fieldId()));
 
         long currentTreeCount = treeRepository.countByFieldId(field.getId());
         double fieldAreaHectares = field.getArea();
         if (currentTreeCount + 1 > fieldAreaHectares * 100) {
-            throw new IllegalStateException("Densité maximale atteinte : le champ ne peut pas contenir plus de " +
-                    (fieldAreaHectares * 100) + " arbres.");
+            throw new IllegalStateException("Maximum density achieved: the field cannot contain more than " +
+                    (fieldAreaHectares * 100) + " trees.");
         }
 
-        // Vérification de la période de plantation
         if (!isPlantingSeasonValid(LocalDate.from(treeRequestDTO.plantingDate()))) {
-            throw new IllegalStateException("Les arbres ne peuvent être plantés qu'entre mars et mai.");
+            throw new IllegalStateException("Trees can only be planted between March and May.");
         }
 
-        // Vérification de l'âge maximum pour la productivité
         int age = calculateAge(LocalDate.from(treeRequestDTO.plantingDate()));
         if (age > 20) {
-            throw new IllegalStateException("L'arbre a dépassé l'âge maximum de productivité (20 ans).");
+            throw new IllegalStateException("The tree has exceeded maximum productivity age (20 ans).");
         }
 
-        Tree tree = mapper.toEntity(treeRequestDTO);
+        Tree tree = mapper.toEntity(treeRequestDTO).setField(field);
         Tree savedTree = treeRepository.save(tree);
         return treeMapper.toDto(savedTree);
     }

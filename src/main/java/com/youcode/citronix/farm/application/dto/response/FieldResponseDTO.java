@@ -6,6 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record FieldResponseDTO(@NotNull Long id,
                                @NotBlank String name,
-                               @NotNull double area, EmbeddableFarmDTO embeddableFarmDTO) {
+                               @NotNull double area, EmbeddableFarmDTO farm) {
 }
 
