@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,4 +38,19 @@ public class Tree  {
 
     @OneToMany(mappedBy = "tree")
     private Set<HarvestDetail> harvestDetails = new HashSet<>();
+
+    public int calculateAge() {
+        return Period.between(LocalDate.from(this.plantingDate), LocalDate.now()).getYears();
+    }
+
+    public double calculateAnnualProductivity() {
+        int age = calculateAge();
+        if (age < 3) {
+            return 2.5; // kg / season
+        } else if (age <= 10) {
+            return 12; // kg / season
+        } else {
+            return 20; // kg / season
+        }
+    }
 }
