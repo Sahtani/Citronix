@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,4 +54,8 @@ public class Tree  {
             return 20; // kg / season
         }
     }
+//    public boolean isPlantingSeasonValid() {
+//        Month plantingMonth = this.plantingDate.getMonth();
+//        return plantingMonth == Month.MARCH || plantingMonth == Month.APRIL || plantingMonth == Month.MAY;
+//    }
 }
