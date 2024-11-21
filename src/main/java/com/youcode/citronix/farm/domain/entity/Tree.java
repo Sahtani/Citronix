@@ -53,6 +53,11 @@ public class Tree  {
             return 20; // kg / season
         }
     }
+    public boolean isProductive(@NotNull LocalDateTime plantingDate) {
+        int age = calculateAge();
+        return age >= 1 && age <= 20;
+    }
+
 //    public boolean isPlantingSeasonValid() {
 //        Month plantingMonth = this.plantingDate.getMonth();
 //        return plantingMonth == Month.MARCH || plantingMonth == Month.APRIL || plantingMonth == Month.MAY;

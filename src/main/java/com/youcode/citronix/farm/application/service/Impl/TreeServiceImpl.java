@@ -72,6 +72,9 @@ public class TreeServiceImpl extends AbstractService<Tree, TreeRequestDTO, TreeR
             throw new IllegalStateException("Maximum density achieved: the field cannot contain more than " +
                     (fieldAreaHectares * 100) + " trees.");
         }
+        if (treeRequestDTO.plantingDate().isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Planting date cannot be in the future.");
+        }
 
         if (!isPlantingSeasonValid(LocalDate.from(treeRequestDTO.plantingDate()))) {
             throw new IllegalStateException("Trees can only be planted between March and May.");

@@ -1,5 +1,6 @@
 package com.youcode.citronix.farm.domain.repository;
 
+import com.youcode.citronix.farm.domain.entity.Field;
 import com.youcode.citronix.farm.domain.entity.Tree;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,6 @@ public interface TreeRepository extends JpaRepository<Tree, Long> {
     long countByFieldId(@Param("fieldId") Long fieldId);
 
     List<Tree> findAllByFieldId(Long fieldId);
+
+    List<Tree> findByField(Field field);
 }
