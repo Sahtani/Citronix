@@ -13,6 +13,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,18 +34,32 @@ public class TreeServiceImpl extends AbstractService<Tree, TreeRequestDTO, TreeR
     }
 
     @Override
-    public List<Tree> getTreesByFieldId(Long fieldId) {
-        return trees.stream()
-                .filter(tree -> tree.getField().getId().equals(fieldId))
+    public List<TreeResponseDTO> getTreesByFieldId(Long fieldId) {
+        return treeRepository.findAllByFieldId(fieldId).stream()
+                .map(treeMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Tree> getTotalProductivityByField(Long fieldId) {
+    public double getTotalProductivityByField(Long fieldId) {
+        // Récupérer tous les arbres par champ
+        List<Tree> trees = treeRepository.findAllByFieldId(fieldId);
+
+        // Calculer la productivité totale
         return trees.stream()
-                .filter(tree -> tree.getField().getId().equals(fieldId))
-                .collect(Collectors.toList());
+                .mapToDouble(tree -> {
+                    // Vérifier si la date de plantation est valide avant de calculer la productivité
+                    if (tree.getPlantingDate() != null) {
+                        return  tree.calculateAnnualProductivity(tree.getPlantingDate());
+                    } else {
+                        // Si la date de plantation est null, retourner 0 ou une autre valeur par défaut
+                        return 0.0;
+                    }
+                })
+                .sum();
     }
+
+
 
     public TreeResponseDTO save(TreeRequestDTO treeRequestDTO) {
 
@@ -62,7 +77,7 @@ public class TreeServiceImpl extends AbstractService<Tree, TreeRequestDTO, TreeR
             throw new IllegalStateException("Trees can only be planted between March and May.");
         }
 
-        int age = calculateAge(LocalDate.from(treeRequestDTO.plantingDate()));
+        int age = calculateAge(LocalDate.from(treeRequestDTO.plantingDate()),field.getId());
         if (age > 20) {
             throw new IllegalStateException("The tree has exceeded maximum productivity age (20 ans).");
         }
@@ -76,8 +91,12 @@ public class TreeServiceImpl extends AbstractService<Tree, TreeRequestDTO, TreeR
         return plantingDate.getMonthValue() >= 3 && plantingDate.getMonthValue() <= 5;
     }
 
-    private int calculateAge(LocalDate plantingDate) {
+    public int calculateAge(LocalDate plantingDate,Long fieldId) {
         return LocalDate.now().getYear() - plantingDate.getYear();
     }
+//    private double  calculateAnnualProductivity(LocalDateTime plantingDate){
+//        Tree tree = new Tree();
+//      return    tree.calculateAnnualProductivity();
+//    }
 
 }

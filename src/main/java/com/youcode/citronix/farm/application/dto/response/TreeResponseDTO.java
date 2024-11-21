@@ -7,5 +7,6 @@ import java.time.LocalDateTime;
 
 public record TreeResponseDTO(Long id,
                               @NotNull LocalDateTime plantingDate,
-                              @NotNull EmbeddableFieldDTO field) {
+                              @NotNull EmbeddableFieldDTO field,
+                              double annualProductivity) {
 }

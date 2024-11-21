@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,7 +43,7 @@ public class Tree  {
         return Period.between(LocalDate.from(this.plantingDate), LocalDate.now()).getYears();
     }
 
-    public double calculateAnnualProductivity() {
+    public double calculateAnnualProductivity(@NotNull LocalDateTime plantingDate) {
         int age = calculateAge();
         if (age < 3) {
             return 2.5; // kg / season
