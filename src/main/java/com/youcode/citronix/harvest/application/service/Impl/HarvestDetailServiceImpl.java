@@ -80,11 +80,7 @@ public class HarvestDetailServiceImpl extends AbstractService<HarvestDetail, Har
             throw new IllegalArgumentException("The tree is no longer productive.");
         }
 
-        // Vérifier la quantité maximale de production
-//        double maxProduction = tree.calculateAnnualProductivity(tree.getPlantingDate());
-//        if (request.harvestedQuantity() > maxProduction) {
-//            throw new IllegalArgumentException("The quantity cannot exceed " + maxProduction + " kg for a tree of this age.");
-//        }
+
 
         // Vérifier si l'arbre a déjà été récolté pour cette saison
         if (harvestDetailRepository.existsByTreeIdAndHarvestSeason(request.treeId(), harvest.getSeason())) {
