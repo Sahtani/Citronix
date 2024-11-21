@@ -1,4 +1,10 @@
 package com.youcode.citronix.harvest.application.dto.response;
 
-public record HarvestResponseDTO() {
+import com.youcode.citronix.harvest.domain.valueobject.Season;
+import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
+
+public record HarvestResponseDTO(@NotNull LocalDateTime harvestDate,
+                                 @NotNull Season season) {
 }
