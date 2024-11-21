@@ -1,6 +1,6 @@
 package com.youcode.citronix.harvest.domain.entity;
 
-import com.youcode.citronix.farm.domain.valueobject.Season;
+import com.youcode.citronix.harvest.domain.valueobject.Season;
 import com.youcode.citronix.sale.domain.entity.Sale;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -32,7 +32,6 @@ public class Harvest  {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Season season;
-@NotNull
     private double totalQuantity;
 
     @OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL, orphanRemoval = true)
