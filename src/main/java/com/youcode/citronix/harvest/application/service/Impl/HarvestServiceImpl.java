@@ -9,9 +9,10 @@ import com.youcode.citronix.harvest.application.service.HarvestService;
 import com.youcode.citronix.harvest.domain.entity.Harvest;
 import com.youcode.citronix.harvest.domain.repository.HarvestRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
-
+@Validated
 public class HarvestServiceImpl extends AbstractService<Harvest, HarvestRequestDTO, HarvestResponseDTO,Long> implements HarvestService {
 
     private final HarvestRepository harvestRepository;
