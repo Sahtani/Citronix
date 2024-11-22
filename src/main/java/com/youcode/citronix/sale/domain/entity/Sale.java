@@ -39,6 +39,9 @@ public class Sale  {
 
     @NotNull
     private double quantitySold;
+    public double getRevenue() {
+        return quantitySold * unitPrice;
+    }
 
 
 }

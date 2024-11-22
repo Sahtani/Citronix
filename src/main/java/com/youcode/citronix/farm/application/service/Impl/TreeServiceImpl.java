@@ -59,8 +59,6 @@ public class TreeServiceImpl extends AbstractService<Tree, TreeRequestDTO, TreeR
                 .sum();
     }
 
-
-
     public TreeResponseDTO save(TreeRequestDTO treeRequestDTO) {
 
         Field field = fieldRepository.findById(treeRequestDTO.fieldId())

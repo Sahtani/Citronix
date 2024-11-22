@@ -60,7 +60,7 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
         // Convertir les entités Farm en objets FarmResponse
         List<FarmResponseDTO> farmResponses = new ArrayList<>();
         for (Farm farmEntity : farms) {
-            FarmResponseDTO response = new FarmResponseDTO(farmEntity.getName(), farmEntity.getLocation(), farmEntity.getTotalArea(),farmEntity.getCreationDate());
+            FarmResponseDTO response = new FarmResponseDTO(farmEntity.getId(),farmEntity.getName(), farmEntity.getLocation(), farmEntity.getTotalArea(),farmEntity.getCreationDate());
             farmResponses.add(response);
         }
 

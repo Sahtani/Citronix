@@ -5,7 +5,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record FarmResponseDTO(@NotBlank String name,
+public record FarmResponseDTO(@NotNull Long id ,
+                              @NotBlank String name,
                               @NotBlank String location,
                               @NotNull
                               double totalArea,
