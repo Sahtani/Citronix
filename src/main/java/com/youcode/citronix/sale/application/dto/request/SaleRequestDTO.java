@@ -1,7 +1,11 @@
 package com.youcode.citronix.sale.application.dto.request;
 
-public record SaleRequestDTO(  Long clientId,
-         Long harvestId,
-         double unitPrice,
-         double quantitySold) {
+import java.time.LocalDateTime;
+
+public record SaleRequestDTO(
+        Long harvestId,
+        double unitPrice,
+        double quantitySold,
+        LocalDateTime saleDate,
+        String customer) {
 }

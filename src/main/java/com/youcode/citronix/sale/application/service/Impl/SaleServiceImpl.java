@@ -41,9 +41,13 @@ public class SaleServiceImpl extends AbstractService<Sale, SaleRequestDTO, SaleR
 
         harvest.setTotalQuantity(harvest.getTotalQuantity() - saleRequestDTO.quantitySold());
         harvestRepository.save(harvest);
-        Sale sale = mapper.toEntity(saleRequestDTO).setHarvest(harvest);
+        Sale sale = mapper.toEntity(saleRequestDTO);
+        sale.setHarvest(harvest);
+        double revenue = sale.getRevenue();
         Sale savedSale = saleRepository.save(sale);
+
         return saleMapper.toDto(savedSale);
+
 
     }
 

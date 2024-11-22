@@ -5,7 +5,7 @@ import com.youcode.citronix.farm.domain.entity.Field;
 import com.youcode.citronix.farm.domain.entity.Tree;
 import com.youcode.citronix.farm.domain.repository.TreeRepository;
 import com.youcode.citronix.harvest.application.dto.request.HarvestDetailRequestDTO;
-import com.youcode.citronix.harvest.application.dto.response.HarvestDetailRsponseDTO;
+import com.youcode.citronix.harvest.application.dto.response.HarvestDetailResponseDTO;
 import com.youcode.citronix.harvest.application.dto.response.HarvestResponseDTO;
 import com.youcode.citronix.harvest.application.mapper.HarvestDetailMapper;
 import com.youcode.citronix.harvest.application.service.HarvestDetailService;
@@ -22,7 +22,7 @@ import java.util.Objects;
 
 @Service
 @Validated
-public class HarvestDetailServiceImpl extends AbstractService<HarvestDetail, HarvestDetailRequestDTO, HarvestDetailRsponseDTO, Long>
+public class HarvestDetailServiceImpl extends AbstractService<HarvestDetail, HarvestDetailRequestDTO, HarvestDetailResponseDTO, Long>
         implements HarvestDetailService {
 
     private final HarvestDetailRepository harvestDetailRepository;
@@ -42,7 +42,7 @@ public class HarvestDetailServiceImpl extends AbstractService<HarvestDetail, Har
     }
 
     @Override
-    public HarvestDetailRsponseDTO save(HarvestDetailRequestDTO request) {
+    public HarvestDetailResponseDTO save(HarvestDetailRequestDTO request) {
         // Charger la récolte associée
         Harvest harvest = harvestRepository.findById(request.harvestId())
                 .orElseThrow(() -> new EntityNotFoundException("Harvest not found with ID: " + request.harvestId()));
