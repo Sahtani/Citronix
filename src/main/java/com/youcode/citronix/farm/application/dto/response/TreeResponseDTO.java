@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record TreeResponseDTO(Long id,
+public record TreeResponseDTO(@NotNull Long id,
                               @NotNull LocalDateTime plantingDate,
                               @NotNull EmbeddableFieldDTO field,
                               double annualProductivity) {

@@ -36,9 +36,15 @@ public class Sale  {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "harvest_id")
     private Harvest harvest;
+//
+//    @Column(nullable = false)
+//    private double quantity;
 
     @NotNull
     private double quantitySold;
+    public double calculateRevenue() {
+        return quantitySold * unitPrice;
+    }
 
 
 }
