@@ -1,4 +1,10 @@
 package com.youcode.citronix.sale.application.dto.response;
 
-public record SaleResponseDTO() {
+import jakarta.validation.constraints.NotNull;
+
+public record SaleResponseDTO(@NotNull Long id,
+        Long clientId,
+                              Long harvestId,
+                              double unitPrice,
+                              double quantitySold) {
 }
