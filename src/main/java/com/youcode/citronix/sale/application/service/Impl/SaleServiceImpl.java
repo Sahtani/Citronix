@@ -1,7 +1,6 @@
 package com.youcode.citronix.sale.application.service.Impl;
 
 import com.youcode.citronix.common.service.AbstractService;
-import com.youcode.citronix.farm.domain.entity.Tree;
 import com.youcode.citronix.harvest.domain.repository.HarvestRepository;
 import com.youcode.citronix.sale.application.dto.request.SaleRequestDTO;
 import com.youcode.citronix.sale.application.dto.response.SaleResponseDTO;
@@ -10,13 +9,13 @@ import com.youcode.citronix.sale.application.service.SaleService;
 import com.youcode.citronix.sale.domain.entity.Sale;
 import com.youcode.citronix.sale.domain.repository.SaleRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.time.LocalDate;
-
 @Service
 @Validated
+@Transactional
 public class SaleServiceImpl extends AbstractService<Sale, SaleRequestDTO, SaleResponseDTO,Long> implements SaleService  {
 
     private final SaleRepository saleRepository;
@@ -45,7 +44,6 @@ public class SaleServiceImpl extends AbstractService<Sale, SaleRequestDTO, SaleR
         sale.setHarvest(harvest);
         double revenue = sale.getRevenue();
         Sale savedSale = saleRepository.save(sale);
-
         return saleMapper.toDto(savedSale);
 
 
