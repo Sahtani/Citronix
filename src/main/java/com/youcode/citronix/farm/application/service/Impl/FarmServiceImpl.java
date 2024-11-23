@@ -2,6 +2,7 @@ package com.youcode.citronix.farm.application.service.Impl;
 
 import com.youcode.citronix.common.service.AbstractService;
 import com.youcode.citronix.farm.application.dto.request.FarmRequestDTO;
+import com.youcode.citronix.farm.application.dto.response.FarmCriteriaDTO;
 import com.youcode.citronix.farm.application.dto.response.FarmResponseDTO;
 import com.youcode.citronix.farm.application.mapper.FarmMapper;
 import com.youcode.citronix.farm.application.service.FarmService;
@@ -34,7 +35,18 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
         this.entityManager = entityManager;
     }
 
-    public List<FarmResponseDTO> searchFarms(String name, String location, Double area) {
+    @Override
+    public FarmResponseDTO save(FarmRequestDTO farmRequestDTO) {
+        if (farmRequestDTO.totalArea() <= 2000) {
+            throw new IllegalArgumentException("The total area must be greater than 2000 m²");
+        }
+        Farm farm = mapper.toEntity(farmRequestDTO);
+
+        Farm savedFarm = farmRepository.save(farm);
+        return mapper.toDto(savedFarm);
+    }
+
+    public List<FarmCriteriaDTO> searchFarms(String name, String location, Double area) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Farm> cq = cb.createQuery(Farm.class);
 
@@ -57,14 +69,13 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
         TypedQuery<Farm> query = entityManager.createQuery(cq);
         List<Farm> farms = query.getResultList();
 
-        // Convertir les entités Farm en objets FarmResponse
-        List<FarmResponseDTO> farmResponses = new ArrayList<>();
+        List<FarmCriteriaDTO> farmCriteriaDTOS = new ArrayList<>();
         for (Farm farmEntity : farms) {
-            FarmResponseDTO response = new FarmResponseDTO(farmEntity.getId(),farmEntity.getName(), farmEntity.getLocation(), farmEntity.getTotalArea(),farmEntity.getCreationDate());
-            farmResponses.add(response);
+            FarmCriteriaDTO response = new FarmCriteriaDTO(farmEntity.getId(),farmEntity.getName(), farmEntity.getLocation(), farmEntity.getTotalArea(),farmEntity.getCreationDate());
+            farmCriteriaDTOS.add(response);
         }
 
-        return farmResponses;
+        return farmCriteriaDTOS;
     }
 
 
