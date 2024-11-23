@@ -39,7 +39,7 @@ public class Sale  {
 
     @NotNull
     private double quantitySold;
-    public double getRevenue() {
+    public double getIncome() {
         return quantitySold * unitPrice;
     }
 
