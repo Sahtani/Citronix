@@ -46,20 +46,15 @@ public class Tree  {
     public double calculateAnnualProductivity(@NotNull LocalDateTime plantingDate) {
         int age = calculateAge();
         if (age < 3) {
-            return 2.5; // kg / season
+            return 2.5;
         } else if (age <= 10) {
-            return 12; // kg / season
+            return 12;
         } else {
-            return 20; // kg / season
+            return 20;
         }
     }
     public boolean isProductive(@NotNull LocalDateTime plantingDate) {
         int age = calculateAge();
         return age >= 1 && age <= 20;
     }
-
-//    public boolean isPlantingSeasonValid() {
-//        Month plantingMonth = this.plantingDate.getMonth();
-//        return plantingMonth == Month.MARCH || plantingMonth == Month.APRIL || plantingMonth == Month.MAY;
-//    }
 }

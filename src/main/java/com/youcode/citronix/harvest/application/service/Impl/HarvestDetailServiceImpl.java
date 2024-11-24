@@ -30,6 +30,7 @@ public class HarvestDetailServiceImpl extends AbstractService<HarvestDetail, Har
     private final HarvestRepository harvestRepository;
     private final TreeRepository treeRepository;
 
+
     public HarvestDetailServiceImpl(HarvestDetailRepository harvestDetailRepository,
                                     HarvestDetailMapper mapper,
                                     HarvestRepository harvestRepository,

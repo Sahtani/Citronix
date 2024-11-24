@@ -5,6 +5,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record HarvestRequestDTO(@NotNull LocalDateTime harvestDate,
-                                @NotNull Season season) {
+public record HarvestRequestDTO(@NotNull LocalDateTime harvestDate) {
 }

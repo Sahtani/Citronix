@@ -37,4 +37,12 @@ public class Field  {
 
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Tree> trees = new HashSet<>();
+
+    public Field(Long id, String name, double area, Farm farm) {
+        this.id = id;
+        this.name = name;
+        this.area = area;
+        this.farm = farm;
+    }
+
 }

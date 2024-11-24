@@ -21,9 +21,6 @@ public class FieldServiceImpl extends AbstractService<Field,FieldRequestDTO, Fie
     private final FarmRepository farmRepository;
     private final FieldMapper mapper;
 
-    private static final double MIN_FIELD_SIZE_HECTARES = 0.1;
-    private static final double MAX_FIELD_SIZE_PERCENTAGE = 0.5;
-    private static final int MAX_FIELDS_COUNT = 10;
     public FieldServiceImpl(FiledRepository filedRepository, FarmRepository farmRepository, FieldMapper mapper) {
         super(filedRepository, mapper);
         this.filedRepository = filedRepository;
@@ -42,10 +39,28 @@ public class FieldServiceImpl extends AbstractService<Field,FieldRequestDTO, Fie
         Field field = mapper.toEntity(fieldRequestDTO);
         field.setFarm(farm).setArea(fieldRequestDTO.area());
 
-        // Association avec la ferme
         farm.getFields().add(field);
         Field savedField = filedRepository.save(field);
         return mapper.toDto(savedField);
+    }
+
+    @Override
+    public FieldResponseDTO update(Long fieldId, FieldRequestDTO fieldRequestDTO) {
+        Field existingField = filedRepository.findById(fieldId)
+                .orElseThrow(() -> new EntityNotFoundException("Field with ID " + fieldId + " not found."));
+
+        Farm farm = farmRepository.findById(fieldRequestDTO.farmId())
+                .orElseThrow(() -> new EntityNotFoundException("Farm with ID " + fieldRequestDTO.farmId() + " not found."));
+
+        validateFieldForFarm(fieldRequestDTO, farm);
+
+        existingField.setArea(fieldRequestDTO.area())
+                .setName(fieldRequestDTO.name())
+                .setFarm(farm);
+
+        Field updatedField = filedRepository.save(existingField);
+
+        return mapper.toDto(updatedField);
     }
 
     private void validateFieldForFarm(FieldRequestDTO fieldRequestDTO, Farm farm) {

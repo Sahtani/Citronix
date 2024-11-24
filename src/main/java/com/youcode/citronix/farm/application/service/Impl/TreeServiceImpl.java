@@ -59,33 +59,38 @@ public class TreeServiceImpl extends AbstractService<Tree, TreeRequestDTO, TreeR
                 .sum();
     }
 
+    @Override
     public TreeResponseDTO save(TreeRequestDTO treeRequestDTO) {
-
         Field field = fieldRepository.findById(treeRequestDTO.fieldId())
-                .orElseThrow(() -> new EntityNotFoundException("Field not found with 'ID : " + treeRequestDTO.fieldId()));
+                .orElseThrow(() -> new EntityNotFoundException("Field not found with ID: " + treeRequestDTO.fieldId()));
 
         long currentTreeCount = treeRepository.countByFieldId(field.getId());
-        double fieldAreaHectares = field.getArea();
-        if (currentTreeCount + 1 > fieldAreaHectares * 100) {
-            throw new IllegalStateException("Maximum density achieved: the field cannot contain more than " +
-                    (fieldAreaHectares * 100) + " trees.");
-        }
-        if (treeRequestDTO.plantingDate().isAfter(LocalDateTime.now())) {
-            throw new IllegalArgumentException("Planting date cannot be in the future.");
-        }
 
-        if (!isPlantingSeasonValid(LocalDate.from(treeRequestDTO.plantingDate()))) {
-            throw new IllegalStateException("Trees can only be planted between March and May.");
-        }
-
-        int age = calculateAge(LocalDate.from(treeRequestDTO.plantingDate()),field.getId());
-        if (age > 20) {
-            throw new IllegalStateException("The tree has exceeded maximum productivity age (20 ans).");
-        }
+        validateTree(treeRequestDTO, field, currentTreeCount);
 
         Tree tree = mapper.toEntity(treeRequestDTO).setField(field);
         Tree savedTree = treeRepository.save(tree);
+
         return treeMapper.toDto(savedTree);
+    }
+
+    @Override
+    public TreeResponseDTO update(Long treeId, TreeRequestDTO treeRequestDTO) {
+        Tree existingTree = treeRepository.findById(treeId)
+                .orElseThrow(() -> new EntityNotFoundException("Tree not found with ID: " + treeId));
+
+        Field field = fieldRepository.findById(treeRequestDTO.fieldId())
+                .orElseThrow(() -> new EntityNotFoundException("Field not found with ID: " + treeRequestDTO.fieldId()));
+
+        long currentTreeCount = treeRepository.countByFieldId(field.getId());
+
+        validateTree(treeRequestDTO, field, currentTreeCount);
+
+        existingTree.setPlantingDate(treeRequestDTO.plantingDate())
+                .setField(field);
+
+        Tree updatedTree = treeRepository.save(existingTree);
+        return treeMapper.toDto(updatedTree);
     }
 
     private boolean isPlantingSeasonValid(LocalDate plantingDate) {
@@ -95,6 +100,33 @@ public class TreeServiceImpl extends AbstractService<Tree, TreeRequestDTO, TreeR
     public int calculateAge(LocalDate plantingDate,Long fieldId) {
         return LocalDate.now().getYear() - plantingDate.getYear();
     }
+
+    private void validateTree(TreeRequestDTO treeRequestDTO, Field field, Long currentTreeCount) {
+        double fieldAreaHectares = field.getArea();
+
+        // Vérifier la densité maximale des arbres
+        if (currentTreeCount >= fieldAreaHectares * 100) {
+            throw new IllegalStateException("Maximum density achieved: the field cannot contain more than " +
+                    (fieldAreaHectares * 100) + " trees.");
+        }
+
+        // Valider la date de plantation
+        if (treeRequestDTO.plantingDate().isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Planting date cannot be in the future.");
+        }
+
+        // Vérifier la saison de plantation
+        if (!isPlantingSeasonValid(LocalDate.from(treeRequestDTO.plantingDate()))) {
+            throw new IllegalStateException("Trees can only be planted between March and May.");
+        }
+
+        // Calculer l'âge pour vérifier la productivité maximale
+        int age = calculateAge(LocalDate.from(treeRequestDTO.plantingDate()), field.getId());
+        if (age > 20) {
+            throw new IllegalStateException("The tree has exceeded maximum productivity age (20 years).");
+        }
+    }
+
 //    private double  calculateAnnualProductivity(LocalDateTime plantingDate){
 //        Tree tree = new Tree();
 //      return    tree.calculateAnnualProductivity();

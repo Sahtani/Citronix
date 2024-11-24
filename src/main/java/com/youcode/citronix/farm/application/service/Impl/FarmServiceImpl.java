@@ -1,5 +1,6 @@
 package com.youcode.citronix.farm.application.service.Impl;
 
+import com.youcode.citronix.common.exception.EntityNotFoundException;
 import com.youcode.citronix.common.service.AbstractService;
 import com.youcode.citronix.farm.application.dto.request.FarmRequestDTO;
 import com.youcode.citronix.farm.application.dto.response.FarmCriteriaDTO;
@@ -45,6 +46,27 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
         Farm savedFarm = farmRepository.save(farm);
         return mapper.toDto(savedFarm);
     }
+
+    @Override
+    public FarmResponseDTO update(Long id, FarmRequestDTO farmRequestDTO) {
+        if (farmRequestDTO.totalArea() <= 2000) {
+            throw new IllegalArgumentException("The total area must be greater than 2000 m²");
+        }
+
+        // Check if the entity exists
+        Farm existingFarm = farmRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Farm with ID " + id + " not found."));
+
+        // Update fields of the existing farm
+        existingFarm.setName(farmRequestDTO.name());
+        existingFarm.setLocation(farmRequestDTO.location());
+        existingFarm.setTotalArea(farmRequestDTO.totalArea());
+        Farm updatedFarm = farmRepository.save(existingFarm);
+
+        // Return the updated DTO
+        return mapper.toDto(updatedFarm);
+    }
+
 
     public List<FarmCriteriaDTO> searchFarms(String name, String location, Double area) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();

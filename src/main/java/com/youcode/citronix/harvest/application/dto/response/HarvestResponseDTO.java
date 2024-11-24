@@ -8,7 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public record HarvestResponseDTO(@NotNull LocalDateTime harvestDate, @NotNull Season season,
+public record HarvestResponseDTO(@NotNull Long id,
+                                 @NotNull LocalDateTime harvestDate,
+                                 @NotNull Season season,
                                  @NotNull Set<HarvestDetailEmbeddableDTO> harvestDetails,
                                  @NotNull Set<SaleEmbeddableDTO> sales
 

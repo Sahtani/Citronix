@@ -30,7 +30,9 @@ public abstract class AbstractService<T, RequestDTO, ResponseDTO, ID> implements
 
     @Override
     public ResponseDTO findById(ID id) {
-        return repository.findById(id).map(mapper::toDto).orElse(null);
+        return repository.findById(id)
+                .map(mapper::toDto)
+                .orElseThrow(() -> new com.youcode.citronix.common.exception.EntityNotFoundException("Entity with ID " + id + " not found."));
     }
 
     @Override
@@ -54,6 +56,9 @@ public abstract class AbstractService<T, RequestDTO, ResponseDTO, ID> implements
 
     @Override
     public void deleteById(ID id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Entity with ID " + id + " not found.");
+        }
         repository.deleteById(id);
     }
 

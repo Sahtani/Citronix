@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,4 +41,10 @@ public class Harvest  {
     @OneToMany(mappedBy = "harvest")
     private Set<Sale> sales = new HashSet<>();
 
+    public Harvest(LocalDateTime harvestDate , Season season,Long id) {
+        this.harvestDate = harvestDate;
+        this.season = season;
+        this.id = id;
+
+    }
 }
