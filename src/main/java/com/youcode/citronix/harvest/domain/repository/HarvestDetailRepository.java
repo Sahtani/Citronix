@@ -14,4 +14,6 @@ public interface HarvestDetailRepository extends JpaRepository<HarvestDetail, Lo
     boolean existsByTreeIdAndHarvestSeason(Long treeId, Season season);
 
     List<HarvestDetail> findByTreeIn(List<Tree> trees);
+
+    boolean existsByHarvestId(Long harvestId);
 }

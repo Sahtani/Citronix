@@ -1,5 +1,6 @@
 package com.youcode.citronix.farm.application.service.Impl;
 
+import com.youcode.citronix.common.exception.EntityExistsByNameException;
 import com.youcode.citronix.common.exception.EntityNotFoundException;
 import com.youcode.citronix.common.service.AbstractService;
 import com.youcode.citronix.farm.application.dto.request.FarmRequestDTO;
@@ -9,6 +10,7 @@ import com.youcode.citronix.farm.application.mapper.FarmMapper;
 import com.youcode.citronix.farm.application.service.FarmService;
 import com.youcode.citronix.farm.domain.entity.Farm;
 import com.youcode.citronix.farm.domain.repository.FarmRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -38,6 +40,9 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
 
     @Override
     public FarmResponseDTO save(FarmRequestDTO farmRequestDTO) {
+        if(farmRepository.existsByName(farmRequestDTO.name())){
+            throw new EntityExistsByNameException(farmRequestDTO.name());
+        }
         if (farmRequestDTO.totalArea() <= 2000) {
             throw new IllegalArgumentException("The total area must be greater than 2000 m²");
         }
@@ -63,7 +68,6 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
         existingFarm.setTotalArea(farmRequestDTO.totalArea());
         Farm updatedFarm = farmRepository.save(existingFarm);
 
-        // Return the updated DTO
         return mapper.toDto(updatedFarm);
     }
 
@@ -96,7 +100,6 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
             FarmCriteriaDTO response = new FarmCriteriaDTO(farmEntity.getId(),farmEntity.getName(), farmEntity.getLocation(), farmEntity.getTotalArea(),farmEntity.getCreationDate());
             farmCriteriaDTOS.add(response);
         }
-
         return farmCriteriaDTOS;
     }
 

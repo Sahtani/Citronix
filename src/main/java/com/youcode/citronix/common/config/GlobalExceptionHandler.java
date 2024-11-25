@@ -1,5 +1,6 @@
 package com.youcode.citronix.common.config;
 
+import com.youcode.citronix.common.exception.EntityExistsByNameException;
 import com.youcode.citronix.farm.application.dto.response.ErrorResponse;
 import com.youcode.citronix.farm.domain.exception.FieldAreaExceededException;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,13 +26,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleResourceNotFound(EntityNotFoundException ex) {
+    public ErrorResponse handleResourceNotFound(EntityNotFoundException ex,HttpServletRequest request) {
         return new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "Entity Not Found",
-                ex.getMessage()
-        );
+                ex.getMessage(),
+                request.getRequestURI());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -41,8 +42,8 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.CONFLICT.value(),
                 "Data Integrity Violation",
-                ex.getMessage()
-        );
+                ex.getMessage(),
+                request.getRequestURI());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -69,36 +70,48 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(FieldAreaExceededException.class)
-    public ResponseEntity<ErrorResponse> handleFieldAreaExceededException(FieldAreaExceededException ex) {
+    public ResponseEntity<ErrorResponse> handleFieldAreaExceededException(FieldAreaExceededException ex,HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
-                ex.getMessage()
-        );
+                ex.getMessage(),
+                request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException ex) {
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException ex,HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                ex.getMessage()
-        );
+                ex.getMessage(),
+                request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex,HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
-                ex.getMessage()
-        );
+                ex.getMessage(),
+                request.getRequestURI());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
+    @ExceptionHandler(EntityExistsByNameException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleEntityExistsByNameException(EntityExistsByNameException ex, HttpServletRequest request) {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Entity Already Exists",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
     }
 
 

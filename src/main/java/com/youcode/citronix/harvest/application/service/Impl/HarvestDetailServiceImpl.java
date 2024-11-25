@@ -44,51 +44,45 @@ public class HarvestDetailServiceImpl extends AbstractService<HarvestDetail, Har
 
     @Override
     public HarvestDetailResponseDTO save(HarvestDetailRequestDTO request) {
-        // Charger la récolte associée
         Harvest harvest = harvestRepository.findById(request.harvestId())
                 .orElseThrow(() -> new EntityNotFoundException("Harvest not found with ID: " + request.harvestId()));
 
-        // Charger l'arbre associé
         Tree tree = treeRepository.findById(request.treeId())
                 .orElseThrow(() -> new EntityNotFoundException("Tree not found with ID: " + request.treeId()));
 
-        // Validation des données
         validateHarvestData(harvest, tree, request);
 
-        // Créer et sauvegarder le détail de récolte
         HarvestDetail detail = mapper.toEntity(request)
                 .setHarvest(harvest)
                 .setTree(tree)
                 .setHarvestedQuantity(request.harvestedQuantity());
 
-        // Mettre à jour la quantité totale de la récolte
+
         double updatedQuantity = harvest.getTotalQuantity() + detail.getHarvestedQuantity();
         harvest.setTotalQuantity(updatedQuantity);
 
-        // Sauvegarder les détails de la récolte
+
         HarvestDetail savedDetail = harvestDetailRepository.save(detail);
         return mapper.toDto(savedDetail);
     }
 
     private void validateHarvestData(Harvest harvest, Tree tree, HarvestDetailRequestDTO request) {
-        // Vérifier la date de récolte par rapport à la date de plantation
+        // Check the harvest date against the planting date
         if (harvest.getHarvestDate().isBefore(tree.getPlantingDate())) {
             throw new IllegalArgumentException("Harvest date cannot be before the tree's plantation date.");
         }
 
-        // Vérifier si l'arbre est encore productif
+        // Check if the tree is still productive
         if (!tree.isProductive(tree.getPlantingDate())) {
             throw new IllegalArgumentException("The tree is no longer productive.");
         }
 
-
-
-        // Vérifier si l'arbre a déjà été récolté pour cette saison
+        // Check if the tree has already been harvested for this season
         if (harvestDetailRepository.existsByTreeIdAndHarvestSeason(request.treeId(), harvest.getSeason())) {
             throw new IllegalStateException("This tree has already been harvested for the season " + harvest.getSeason());
         }
 
-        // Vérifier s'il existe déjà une récolte pour le champ et la saison
+        // Check if there is already a crop for the field and season
         if (isHarvestInSameSeasonForField(tree.getField(), harvest)) {
             throw new IllegalArgumentException("A harvest already exists for this field in the same season.");
         }
