@@ -35,7 +35,7 @@ public class Field  {
     @JoinColumn(nullable = false)
     private Farm farm;
 
-    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
     private Set<Tree> trees = new HashSet<>();
 
     public Field(Long id, String name, double area, Farm farm) {

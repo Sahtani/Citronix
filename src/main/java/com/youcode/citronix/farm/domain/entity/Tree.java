@@ -36,7 +36,7 @@ public class Tree  {
     @NotNull
     private Field field;
 
-    @OneToMany(mappedBy = "tree")
+    @OneToMany(mappedBy = "tree",cascade = CascadeType.ALL)
     private Set<HarvestDetail> harvestDetails = new HashSet<>();
 
     public int calculateAge() {

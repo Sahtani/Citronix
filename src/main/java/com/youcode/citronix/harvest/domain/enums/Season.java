@@ -1,7 +1,8 @@
-package com.youcode.citronix.harvest.domain.valueobject;
+package com.youcode.citronix.harvest.domain.enums;
 
 import java.time.LocalDate;
 import java.time.Month;
+
 
 public enum Season {
     SPRING, SUMMER, FALL, WINTER;
@@ -22,7 +23,4 @@ public enum Season {
         };
     }
 
-    public boolean matches(LocalDate date) {
-        return this == fromDate(date);
-    }
 }

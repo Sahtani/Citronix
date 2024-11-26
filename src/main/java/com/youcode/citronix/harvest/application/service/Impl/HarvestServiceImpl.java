@@ -8,9 +8,9 @@ import com.youcode.citronix.harvest.application.dto.response.HarvestResponseDTO;
 import com.youcode.citronix.harvest.application.mapper.HarvestMapper;
 import com.youcode.citronix.harvest.application.service.HarvestService;
 import com.youcode.citronix.harvest.domain.entity.Harvest;
+import com.youcode.citronix.harvest.domain.enums.Season;
 import com.youcode.citronix.harvest.domain.repository.HarvestDetailRepository;
 import com.youcode.citronix.harvest.domain.repository.HarvestRepository;
-import com.youcode.citronix.harvest.domain.valueobject.Season;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -59,13 +59,9 @@ public class HarvestServiceImpl extends AbstractService<Harvest, HarvestRequestD
         }
 
         LocalDateTime harvestDate = harvestRequestDTO.harvestDate();
-        if (harvestDate != null) {
-            existingHarvest.setHarvestDate(harvestDate);
-            existingHarvest.setSeason(Season.fromDate(LocalDate.from(harvestDate)));
-        }
 
+        existingHarvest.setHarvestDate(harvestDate).setSeason(Season.fromDate(LocalDate.from(harvestDate)));
         Harvest updatedHarvest = harvestRepository.save(existingHarvest);
-
         return mapper.toDto(updatedHarvest);
     }
 

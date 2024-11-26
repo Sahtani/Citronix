@@ -33,26 +33,16 @@ public class TreeServiceImpl extends AbstractService<Tree, TreeRequestDTO, TreeR
         this.trees = trees;
     }
 
-    @Override
-    public List<TreeResponseDTO> getTreesByFieldId(Long fieldId) {
-        return treeRepository.findAllByFieldId(fieldId).stream()
-                .map(treeMapper::toDto)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public double getTotalProductivityByField(Long fieldId) {
-        // Récupérer tous les arbres par champ
         List<Tree> trees = treeRepository.findAllByFieldId(fieldId);
 
-        // Calculer la productivité totale
         return trees.stream()
                 .mapToDouble(tree -> {
-                    // Vérifier si la date de plantation est valide avant de calculer la productivité
                     if (tree.getPlantingDate() != null) {
                         return  tree.calculateAnnualProductivity(tree.getPlantingDate());
                     } else {
-                        // Si la date de plantation est null, retourner 0 ou une autre valeur par défaut
                         return 0.0;
                     }
                 })
@@ -110,26 +100,31 @@ public class TreeServiceImpl extends AbstractService<Tree, TreeRequestDTO, TreeR
                     (fieldAreaHectares * 100) + " trees.");
         }
 
-        // Valider la date de plantation
-        if (treeRequestDTO.plantingDate().isAfter(LocalDateTime.now())) {
-            throw new IllegalArgumentException("Planting date cannot be in the future.");
+        if(treeRequestDTO.plantingDate().isBefore(field.getFarm().getCreationDate())){
+            throw new IllegalStateException("The planting date cannot be earlier than the farm creation date.");
+
         }
+//        if (treeRequestDTO.plantingDate().isAfter(LocalDateTime.now())) {
+//            throw new IllegalArgumentException("Planting date cannot be in the future.");
+//        }
 
         // Vérifier la saison de plantation
         if (!isPlantingSeasonValid(LocalDate.from(treeRequestDTO.plantingDate()))) {
             throw new IllegalStateException("Trees can only be planted between March and May.");
         }
 
-        // Calculer l'âge pour vérifier la productivité maximale
         int age = calculateAge(LocalDate.from(treeRequestDTO.plantingDate()), field.getId());
         if (age > 20) {
             throw new IllegalStateException("The tree has exceeded maximum productivity age (20 years).");
         }
     }
 
-//    private double  calculateAnnualProductivity(LocalDateTime plantingDate){
-//        Tree tree = new Tree();
-//      return    tree.calculateAnnualProductivity();
-//    }
+    @Override
+    public List<TreeResponseDTO> getTreesByFieldId(Long fieldId) {
+        return treeRepository.findAllByFieldId(fieldId).stream()
+                .map(treeMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 
 }

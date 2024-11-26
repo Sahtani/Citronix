@@ -43,8 +43,8 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
         if(farmRepository.existsByName(farmRequestDTO.name())){
             throw new EntityExistsByNameException(farmRequestDTO.name());
         }
-        if (farmRequestDTO.totalArea() <= 2000) {
-            throw new IllegalArgumentException("The total area must be greater than 2000 m²");
+        if (farmRequestDTO.totalArea() <= 0.2) {
+            throw new IllegalArgumentException("The total area must be greater than 0.2 hectares ");
         }
         Farm farm = mapper.toEntity(farmRequestDTO);
 
@@ -58,14 +58,13 @@ public class FarmServiceImpl extends AbstractService<Farm, FarmRequestDTO, FarmR
             throw new IllegalArgumentException("The total area must be greater than 2000 m²");
         }
 
-        // Check if the entity exists
         Farm existingFarm = farmRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Farm with ID " + id + " not found."));
 
-        // Update fields of the existing farm
         existingFarm.setName(farmRequestDTO.name());
         existingFarm.setLocation(farmRequestDTO.location());
         existingFarm.setTotalArea(farmRequestDTO.totalArea());
+        existingFarm.setCreationDate(farmRequestDTO.creationDate());
         Farm updatedFarm = farmRepository.save(existingFarm);
 
         return mapper.toDto(updatedFarm);

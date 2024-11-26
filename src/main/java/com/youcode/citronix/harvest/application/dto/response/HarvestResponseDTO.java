@@ -1,7 +1,7 @@
 package com.youcode.citronix.harvest.application.dto.response;
 
 import com.youcode.citronix.harvest.application.dto.embeddable.HarvestDetailEmbeddableDTO;
-import com.youcode.citronix.harvest.domain.valueobject.Season;
+import com.youcode.citronix.harvest.domain.enums.Season;
 import com.youcode.citronix.sale.application.dto.embeddable.SaleEmbeddableDTO;
 import jakarta.validation.constraints.NotNull;
 

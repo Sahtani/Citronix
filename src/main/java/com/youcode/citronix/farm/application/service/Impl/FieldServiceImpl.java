@@ -1,5 +1,6 @@
 package com.youcode.citronix.farm.application.service.Impl;
 
+import com.youcode.citronix.common.exception.EntityExistsByNameException;
 import com.youcode.citronix.common.service.AbstractService;
 import com.youcode.citronix.farm.application.dto.request.FieldRequestDTO;
 import com.youcode.citronix.farm.application.dto.response.FieldResponseDTO;
@@ -30,9 +31,12 @@ public class FieldServiceImpl extends AbstractService<Field,FieldRequestDTO, Fie
 
     @Override
     public FieldResponseDTO save(FieldRequestDTO fieldRequestDTO) {
+
+        if(filedRepository.existsByName(fieldRequestDTO.name())){
+            throw new EntityExistsByNameException(fieldRequestDTO.name());
+        }
         Farm farm = farmRepository.findById(fieldRequestDTO.farmId())
                 .orElseThrow(() -> new EntityNotFoundException("Farm with ID " + fieldRequestDTO.farmId() + " not found"));
-
 
         validateFieldForFarm(fieldRequestDTO, farm);
 

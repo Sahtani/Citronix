@@ -57,7 +57,6 @@ public class HarvestDetailServiceImpl extends AbstractService<HarvestDetail, Har
                 .setTree(tree)
                 .setHarvestedQuantity(request.harvestedQuantity());
 
-
         double updatedQuantity = harvest.getTotalQuantity() + detail.getHarvestedQuantity();
         harvest.setTotalQuantity(updatedQuantity);
 
@@ -103,20 +102,9 @@ public class HarvestDetailServiceImpl extends AbstractService<HarvestDetail, Har
                     return true;
                 }
             }
-
-
         }
 
         return false;
-    }
-
-
-    private boolean isTreeHarvestedInSameSeason(Tree tree, Harvest harvest) {
-        List<HarvestDetail> harvestDetails = harvestDetailRepository.findByTreeIn(List.of(tree));
-
-        return harvestDetails.stream()
-                .map(HarvestDetail::getHarvest)
-                .anyMatch(existingHarvest -> isSameSeason(existingHarvest, harvest));
     }
 
     private boolean isSameSeason(Harvest harvest1, Harvest harvest2) {

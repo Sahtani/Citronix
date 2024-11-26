@@ -2,7 +2,7 @@ package com.youcode.citronix.harvest.domain.repository;
 
 import com.youcode.citronix.farm.domain.entity.Tree;
 import com.youcode.citronix.harvest.domain.entity.HarvestDetail;
-import com.youcode.citronix.harvest.domain.valueobject.Season;
+import com.youcode.citronix.harvest.domain.enums.Season;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

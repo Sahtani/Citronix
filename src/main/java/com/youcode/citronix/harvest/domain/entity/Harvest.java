@@ -1,16 +1,14 @@
 package com.youcode.citronix.harvest.domain.entity;
 
-import com.youcode.citronix.harvest.domain.valueobject.Season;
+import com.youcode.citronix.harvest.domain.enums.Season;
 import com.youcode.citronix.sale.domain.entity.Sale;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,13 +33,13 @@ public class Harvest  {
     private Season season;
     private double totalQuantity;
 
-    @OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL)
     private Set<HarvestDetail> harvestDetails = new HashSet<>();
 
-    @OneToMany(mappedBy = "harvest")
+    @OneToMany(mappedBy = "harvest",cascade = CascadeType.ALL)
     private Set<Sale> sales = new HashSet<>();
 
-    public Harvest(LocalDateTime harvestDate , Season season,Long id) {
+    public Harvest(LocalDateTime harvestDate , Season season, Long id) {
         this.harvestDate = harvestDate;
         this.season = season;
         this.id = id;

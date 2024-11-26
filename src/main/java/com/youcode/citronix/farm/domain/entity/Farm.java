@@ -39,7 +39,7 @@ public class Farm  {
     @NotNull
     private LocalDateTime creationDate;
 
-    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL)
     private Set<Field> fields = new HashSet<>();
     public Farm(Long id, String name, String location, double totalArea) {
         this.id =id;

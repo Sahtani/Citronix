@@ -8,5 +8,5 @@ import com.youcode.citronix.farm.application.dto.response.FarmResponseDTO;
 import java.util.List;
 
 public interface FarmService extends GenericService<FarmRequestDTO, FarmResponseDTO, Long> {
-    public List<FarmCriteriaDTO> searchFarms(String name, String location, Double area);
+     List<FarmCriteriaDTO> searchFarms(String name, String location, Double area);
 }

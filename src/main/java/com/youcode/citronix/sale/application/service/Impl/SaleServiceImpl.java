@@ -1,6 +1,7 @@
 package com.youcode.citronix.sale.application.service.Impl;
 
 import com.youcode.citronix.common.service.AbstractService;
+import com.youcode.citronix.harvest.domain.entity.Harvest;
 import com.youcode.citronix.harvest.domain.repository.HarvestRepository;
 import com.youcode.citronix.sale.application.dto.request.SaleRequestDTO;
 import com.youcode.citronix.sale.application.dto.response.SaleResponseDTO;
@@ -12,6 +13,9 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import java.net.http.WebSocket;
+import java.util.List;
 
 @Service
 @Validated
@@ -48,5 +52,10 @@ public class SaleServiceImpl extends AbstractService<Sale, SaleRequestDTO, SaleR
 
 
     }
+//    public double calculateTotalRevenue(SaleRequestDTO saleRequestDTO) {
+//        Harvest harvest = harvestRepository.findById(saleRequestDTO.harvestId()).orElseThrow(() -> new EntityNotFoundException("Harvest not found with ID: " + saleRequestDTO.harvestId()));
+//        double income = saleRepository.findAll().stream().map(Sale::getHarvest).mapToDouble(Sale ::getIncome).sum();
+//        return income ;
+//    }
 
 }

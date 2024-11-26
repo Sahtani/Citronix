@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface TreeService extends GenericService<TreeRequestDTO, TreeResponseDTO,Long> {
 
-    public List<TreeResponseDTO> getTreesByFieldId(Long fieldId) ;
-    public double getTotalProductivityByField(Long fieldId);
-    public int calculateAge(LocalDate plantingDate, Long fieldId);
+     List<TreeResponseDTO> getTreesByFieldId(Long fieldId) ;
+     double getTotalProductivityByField(Long fieldId);
+     int calculateAge(LocalDate plantingDate, Long fieldId);
 }
