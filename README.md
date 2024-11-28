@@ -11,17 +11,14 @@ Citronix is a comprehensive lemon farm management system designed to help farmer
 ### Core Domains
 1. **Farm Management Domain**
     - Aggregate Root: Farm
-    - Entities: Field
-
-2. **Tree Management Domain**
-    - Aggregate Root: Tree
-
-3. **Harvest Domain**
+    - Entities: Field ,Tree
+    - 
+2. **Harvest Domain**
     - Aggregate Root: Harvest
     - Entities: HarvestDetail
     - Value Objects: Season
 
-4. **Sales Domain**
+3. **Sales Domain**
     - Aggregate Root: Sale
 
 ### Bounded Contexts
