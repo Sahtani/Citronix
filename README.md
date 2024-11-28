@@ -176,9 +176,6 @@ API documentation will be available at `http://localhost:8080/swagger-ui.html` w
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📜 License
-This project is licensed under the MIT License - see the LICENSE file for details
-
 ## 🔗 Resources
 - [Project Repository](https://github.com/Sahtani/Citronix)
 - [Design Documentation](https://lucid.app/lucidchart/e84f57eb-617f-4b6c-a518-b15c5bf03c96/edit)
